@@ -69,7 +69,7 @@ public class RemoteLoader {
                         }else {
                             return;
                         }
-                        delayTimer = new Timer(1000, new ActionListener() {
+                        delayTimer = new Timer(100, new ActionListener() {
                             int count = 10; 
                             public void actionPerformed(ActionEvent e) {
                                 if (count > 0) {
@@ -115,7 +115,18 @@ public class RemoteLoader {
         vacationButton.setPreferredSize(new Dimension(160, 30));
         vacationButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                commandHistory.clear(); 
+                if (delayTimer == null || !delayTimer.isRunning()) {
+                    if (!commandHistory.isEmpty()) {
+                        for (int i = commandHistory.size(); i > 0; i--) {
+                            if (labelPanel.getComponent(commandHistory.peek()).getBackground() == Color.WHITE) {
+                                labelPanel.getComponent(commandHistory.peek()).setBackground(Color.YELLOW);
+                            } else {
+                                labelPanel.getComponent(commandHistory.peek()).setBackground(Color.WHITE);
+                            }
+                            commandHistory.pop();
+                        }
+                    }
+                }
             }
         });
 
